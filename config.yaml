@@ -1,25 +1,80 @@
 endpoints:
-  - name: ggrmotor
-    group: websites
+  - name: ggrmotor website
+    group: website availability
     url: "https://ggrmotor.com"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 2000"
-      - "[CERTIFICATE_EXPIRATION] > 168h"
-      - "[DOMAIN_EXPIRATION] > 720h"
 
-  - name: ggrmotor-www
-    group: websites
+  - name: ggrmotor www website
+    group: website availability
     url: "https://www.ggrmotor.com"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 2000"
-      - "[CERTIFICATE_EXPIRATION] > 168h"
 
-  - name: ggrmotor-dns
-    group: websites
+  - name: navbright website
+    group: website availability
+    url: "https://navbright.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
+
+  - name: navbright www website
+    group: website availability
+    url: "https://www.navbright.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
+
+  - name: ggrmotor SSL certificate
+    group: SSL certificates
+    url: "https://ggrmotor.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+
+  - name: ggrmotor www SSL certificate
+    group: SSL certificates
+    url: "https://www.ggrmotor.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+
+  - name: navbright SSL certificate
+    group: SSL certificates
+    url: "https://navbright.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+
+  - name: navbright www SSL certificate
+    group: SSL certificates
+    url: "https://www.navbright.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+
+  - name: ggrmotor domain expiry
+    group: domain expiry
+    url: "https://ggrmotor.com"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+
+  - name: navbright domain expiry
+    group: domain expiry
+    url: "https://navbright.com"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+
+  - name: ggrmotor DNS
+    group: DNS resolution
     url: "1.1.1.1"
     interval: 5m
     dns:
@@ -28,27 +83,8 @@ endpoints:
     conditions:
       - "[DNS_RCODE] == NOERROR"
 
-  - name: navbright
-    group: websites
-    url: "https://navbright.com"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
-      - "[CERTIFICATE_EXPIRATION] > 168h"
-      - "[DOMAIN_EXPIRATION] > 720h"
-
-  - name: navbright-www
-    group: websites
-    url: "https://www.navbright.com"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
-      - "[CERTIFICATE_EXPIRATION] > 168h"
-
-  - name: navbright-dns
-    group: websites
+  - name: navbright DNS
+    group: DNS resolution
     url: "1.1.1.1"
     interval: 5m
     dns:
