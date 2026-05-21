@@ -5,7 +5,28 @@ endpoints:
     interval: 5m
     conditions:
       - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
       - "[CERTIFICATE_EXPIRATION] > 168h"
+      - "[DOMAIN_EXPIRATION] > 720h"
+
+  - name: ggrmotor-www
+    group: websites
+    url: "https://www.ggrmotor.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
+      - "[CERTIFICATE_EXPIRATION] > 168h"
+
+  - name: ggrmotor-dns
+    group: websites
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "ggrmotor.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
 
   - name: navbright
     group: websites
@@ -13,57 +34,25 @@ endpoints:
     interval: 5m
     conditions:
       - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
+      - "[CERTIFICATE_EXPIRATION] > 168h"
+      - "[DOMAIN_EXPIRATION] > 720h"
+
+  - name: navbright-www
+    group: websites
+    url: "https://www.navbright.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 2000"
       - "[CERTIFICATE_EXPIRATION] > 168h"
 
-  - name: front-end
-    group: core
-    url: "https://twin.sh/health"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[BODY].status == UP"
-      - "[RESPONSE_TIME] < 150"
-
-  - name: back-end
-    group: core
-    url: "https://example.org/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
-  - name: monitoring
-    group: internal
-    url: "https://example.org/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-
-  - name: nas
-    group: internal
-    url: "https://example.org/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-
-  - name: example-dns-query
-    url: "8.8.8.8" # Address of the DNS server to use
+  - name: navbright-dns
+    group: websites
+    url: "1.1.1.1"
     interval: 5m
     dns:
-      query-name: "example.com"
+      query-name: "navbright.com"
       query-type: "A"
     conditions:
-      - "[BODY] == pat(*.*.*.*)"  # Matches any IPv4 address
       - "[DNS_RCODE] == NOERROR"
-
-  - name: icmp-ping
-    url: "icmp://example.org"
-    interval: 1m
-    conditions:
-      - "[CONNECTED] == true"
-
-  - name: check-domain-expiration
-    url: "https://example.org/"
-    interval: 1h
-    conditions:
-      - "[DOMAIN_EXPIRATION] > 720h"
