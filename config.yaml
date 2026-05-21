@@ -1,4 +1,20 @@
 endpoints:
+  - name: ggrmotor
+    group: websites
+    url: "https://ggrmotor.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 168h"
+
+  - name: navbright
+    group: websites
+    url: "https://navbright.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 168h"
+
   - name: front-end
     group: core
     url: "https://twin.sh/health"
