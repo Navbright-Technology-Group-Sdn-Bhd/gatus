@@ -5,15 +5,7 @@ endpoints:
     interval: 5m
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
-
-  - name: ggrmotor www website
-    group: website availability
-    url: "https://www.ggrmotor.com"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
+      - "[RESPONSE_TIME] < 5000"
 
   - name: navbright website
     group: website availability
@@ -21,15 +13,23 @@ endpoints:
     interval: 5m
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
+      - "[RESPONSE_TIME] < 5000"
 
-  - name: navbright www website
+  - name: brillionex website
     group: website availability
-    url: "https://www.navbright.com"
+    url: "https://brillionex.com"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 2000"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: easehubs website
+    group: website availability
+    url: "https://easehubs.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
 
   - name: ggrmotor SSL certificate
     group: SSL certificates
@@ -37,13 +37,8 @@ endpoints:
     interval: 1h
     conditions:
       - "[CERTIFICATE_EXPIRATION] > 720h"
-
-  - name: ggrmotor www SSL certificate
-    group: SSL certificates
-    url: "https://www.ggrmotor.com"
-    interval: 1h
-    conditions:
-      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
 
   - name: navbright SSL certificate
     group: SSL certificates
@@ -51,13 +46,26 @@ endpoints:
     interval: 1h
     conditions:
       - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
 
-  - name: navbright www SSL certificate
+  - name: brillionex SSL certificate
     group: SSL certificates
-    url: "https://www.navbright.com"
+    url: "https://brillionex.com"
     interval: 1h
     conditions:
       - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: easehubs SSL certificate
+    group: SSL certificates
+    url: "https://easehubs.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
 
   - name: ggrmotor domain expiry
     group: domain expiry
@@ -65,6 +73,8 @@ endpoints:
     interval: 12h
     conditions:
       - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
 
   - name: navbright domain expiry
     group: domain expiry
@@ -72,6 +82,26 @@ endpoints:
     interval: 12h
     conditions:
       - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: brillionex domain expiry
+    group: domain expiry
+    url: "https://brillionex.com"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: easehubs domain expiry
+    group: domain expiry
+    url: "https://easehubs.com"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
 
   - name: ggrmotor DNS
     group: DNS resolution
@@ -89,6 +119,26 @@ endpoints:
     interval: 5m
     dns:
       query-name: "navbright.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: brillionex DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "brillionex.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: easehubs DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "easehubs.com"
       query-type: "A"
     conditions:
       - "[DNS_RCODE] == NOERROR"
