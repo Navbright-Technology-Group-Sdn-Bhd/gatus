@@ -51,13 +51,53 @@
 
             <Card>
               <CardHeader class="pb-2">
-                <CardTitle class="text-sm font-medium text-muted-foreground">Monitor Types</CardTitle>
+                <CardTitle class="text-sm font-medium text-muted-foreground">Availability</CardTitle>
               </CardHeader>
               <CardContent>
-                <div class="text-2xl font-bold">{{ groupedEndpoints.length }}</div>
+                <div class="text-2xl font-bold">{{ availabilityPercent }}</div>
               </CardContent>
             </Card>
           </div>
+
+          <Card v-if="relatedEndpoints.length > 0">
+            <CardHeader>
+              <CardTitle>Service Availability Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div class="space-y-4">
+                <div :class="['rounded-md border p-4', summaryToneClass]">
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p class="text-lg font-semibold">{{ serviceSummaryTitle }}</p>
+                      <p class="text-sm mt-1">{{ serviceSummaryDescription }}</p>
+                    </div>
+                    <StatusBadge :status="overallStatus" />
+                  </div>
+                </div>
+
+                <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                  <div
+                    v-for="summary in serviceSummaries"
+                    :key="summary.name"
+                    class="rounded-md border p-3 bg-background"
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <p class="text-sm font-medium">{{ summary.name }}</p>
+                        <p class="text-xs text-muted-foreground mt-1">
+                          {{ summary.healthy }} / {{ summary.total }} healthy
+                        </p>
+                      </div>
+                      <StatusBadge :status="summary.status" />
+                    </div>
+                    <div v-if="summary.unhealthyNames.length" class="mt-3 text-xs text-red-600 dark:text-red-400">
+                      {{ summary.unhealthyNames.join(', ') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           <div v-if="loading && relatedEndpoints.length === 0" class="flex items-center justify-center py-20">
             <Loading size="lg" />
@@ -132,6 +172,17 @@ const healthyCount = computed(() => {
   return relatedEndpoints.value.filter((endpoint) => getLatestResult(endpoint)?.success).length
 })
 
+const unhealthyEndpoints = computed(() => {
+  return relatedEndpoints.value.filter((endpoint) => !getLatestResult(endpoint)?.success)
+})
+
+const availabilityPercent = computed(() => {
+  if (relatedEndpoints.value.length === 0) {
+    return 'N/A'
+  }
+  return `${Math.round((healthyCount.value / relatedEndpoints.value.length) * 100)}%`
+})
+
 const overallStatus = computed(() => {
   if (relatedEndpoints.value.length === 0) {
     return 'unknown'
@@ -147,6 +198,36 @@ const overallStatusLabel = computed(() => {
     return 'Issues Detected'
   }
   return 'Unknown'
+})
+
+const serviceSummaryTitle = computed(() => {
+  if (overallStatus.value === 'healthy') {
+    return 'All monitored services are available'
+  }
+  if (overallStatus.value === 'unhealthy') {
+    return `${unhealthyEndpoints.value.length} check${unhealthyEndpoints.value.length === 1 ? '' : 's'} require attention`
+  }
+  return 'Availability has not been checked yet'
+})
+
+const serviceSummaryDescription = computed(() => {
+  if (overallStatus.value === 'healthy') {
+    return 'Website availability, SSL certificate, domain expiry, and DNS checks are currently healthy.'
+  }
+  if (unhealthyEndpoints.value.length > 0) {
+    return unhealthyEndpoints.value.map((endpoint) => endpoint.name).join(', ')
+  }
+  return 'Waiting for the first monitoring result.'
+})
+
+const summaryToneClass = computed(() => {
+  if (overallStatus.value === 'healthy') {
+    return 'bg-green-50 border-green-200 text-green-900 dark:bg-green-950 dark:border-green-900 dark:text-green-100'
+  }
+  if (overallStatus.value === 'unhealthy') {
+    return 'bg-red-50 border-red-200 text-red-900 dark:bg-red-950 dark:border-red-900 dark:text-red-100'
+  }
+  return 'bg-muted text-muted-foreground'
 })
 
 const lastCheckTime = computed(() => {
@@ -178,6 +259,22 @@ const groupedEndpoints = computed(() => {
       name,
       items: groups[name].sort((a, b) => a.name.localeCompare(b.name)),
     }))
+})
+
+const serviceSummaries = computed(() => {
+  return groupedEndpoints.value.map((group) => {
+    const healthy = group.items.filter((endpoint) => getLatestResult(endpoint)?.success).length
+    const unhealthyNames = group.items
+      .filter((endpoint) => !getLatestResult(endpoint)?.success)
+      .map((endpoint) => endpoint.name)
+    return {
+      name: group.name,
+      healthy,
+      total: group.items.length,
+      unhealthyNames,
+      status: healthy === group.items.length ? 'healthy' : 'unhealthy',
+    }
+  })
 })
 
 const fetchData = async () => {
