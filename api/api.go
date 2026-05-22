@@ -89,6 +89,8 @@ func (a *API) createRouter(cfg *config.Config) *fiber.App {
 	unprotectedAPIRouter.Post("/v1/endpoints/:key/external", CreateExternalEndpointResult(cfg))
 	// SPA
 	app.Get("/", SinglePageApplication(cfg.UI))
+	app.Get("/clients", SinglePageApplication(cfg.UI))
+	app.Get("/clients/:client", SinglePageApplication(cfg.UI))
 	app.Get("/endpoints/:key", SinglePageApplication(cfg.UI))
 	app.Get("/suites/:key", SinglePageApplication(cfg.UI))
 	// Health endpoint

@@ -17,6 +17,13 @@
               <Activity v-if="showAverageResponseTime" class="h-5 w-5" />
               <Timer v-else class="h-5 w-5" />
             </Button>
+            <RouterLink
+              to="/clients"
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+            >
+              <Users class="h-4 w-4 mr-2" />
+              Client Pages
+            </RouterLink>
             <Button variant="ghost" size="icon" @click="refreshData" title="Refresh data">
               <RefreshCw class="h-5 w-5" />
             </Button>
@@ -183,7 +190,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Activity, Timer, RefreshCw, AlertCircle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, CheckCircle } from 'lucide-vue-next'
+import { Activity, Timer, RefreshCw, AlertCircle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, CheckCircle, Users } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import EndpointCard from '@/components/EndpointCard.vue'
 import SuiteCard from '@/components/SuiteCard.vue'
