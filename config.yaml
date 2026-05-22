@@ -31,6 +31,54 @@ endpoints:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 5000"
 
+  - name: erp.thecopierguy.my website
+    group: website availability
+    url: "https://erp.thecopierguy.my"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: rg50.ga611bol.org website
+    group: website availability
+    url: "https://rg50.ga611bol.org"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: ga611.navbright.com website
+    group: website availability
+    url: "https://ga611.navbright.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: massivecap.my website
+    group: website availability
+    url: "https://massivecap.my"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: premiumscreen.my website
+    group: website availability
+    url: "https://premiumscreen.my"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
+  - name: roheemedic.com website
+    group: website availability
+    url: "https://roheemedic.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 5000"
+
   - name: ggrmotor SSL certificate
     group: SSL certificates
     url: "https://ggrmotor.com"
@@ -61,6 +109,60 @@ endpoints:
   - name: easehubs SSL certificate
     group: SSL certificates
     url: "https://easehubs.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: erp.thecopierguy.my SSL certificate
+    group: SSL certificates
+    url: "https://erp.thecopierguy.my"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: rg50.ga611bol.org SSL certificate
+    group: SSL certificates
+    url: "https://rg50.ga611bol.org"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: ga611.navbright.com SSL certificate
+    group: SSL certificates
+    url: "https://ga611.navbright.com"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: massivecap.my SSL certificate
+    group: SSL certificates
+    url: "https://massivecap.my"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: premiumscreen.my SSL certificate
+    group: SSL certificates
+    url: "https://premiumscreen.my"
+    interval: 1h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: roheemedic.com SSL certificate
+    group: SSL certificates
+    url: "https://roheemedic.com"
     interval: 1h
     conditions:
       - "[CERTIFICATE_EXPIRATION] > 720h"
@@ -103,6 +205,51 @@ endpoints:
     ui:
       resolve-successful-conditions: true
 
+  - name: thecopierguy.my domain expiry
+    group: domain expiry
+    url: "https://thecopierguy.my"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: ga611bol.org domain expiry
+    group: domain expiry
+    url: "https://ga611bol.org"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: massivecap.my domain expiry
+    group: domain expiry
+    url: "https://massivecap.my"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: premiumscreen.my domain expiry
+    group: domain expiry
+    url: "https://premiumscreen.my"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
+  - name: roheemedic.com domain expiry
+    group: domain expiry
+    url: "https://roheemedic.com"
+    interval: 12h
+    conditions:
+      - "[DOMAIN_EXPIRATION] > 720h"
+    ui:
+      resolve-successful-conditions: true
+
   - name: ggrmotor DNS
     group: DNS resolution
     url: "1.1.1.1"
@@ -139,6 +286,66 @@ endpoints:
     interval: 5m
     dns:
       query-name: "easehubs.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: erp.thecopierguy.my DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "erp.thecopierguy.my"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: rg50.ga611bol.org DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "rg50.ga611bol.org"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: ga611.navbright.com DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "ga611.navbright.com"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: massivecap.my DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "massivecap.my"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: premiumscreen.my DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "premiumscreen.my"
+      query-type: "A"
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: roheemedic.com DNS
+    group: DNS resolution
+    url: "1.1.1.1"
+    interval: 5m
+    dns:
+      query-name: "roheemedic.com"
       query-type: "A"
     conditions:
       - "[DNS_RCODE] == NOERROR"
