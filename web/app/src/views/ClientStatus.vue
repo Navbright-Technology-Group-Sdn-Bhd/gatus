@@ -69,7 +69,7 @@
                   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p class="text-lg font-semibold">{{ serviceSummaryTitle }}</p>
-                      <p class="text-sm mt-1">{{ serviceSummaryDescription }}</p>
+                      <p class="text-sm mt-1 opacity-95">{{ serviceSummaryDescription }}</p>
                     </div>
                     <StatusBadge :status="overallStatus" />
                   </div>
@@ -109,22 +109,20 @@
             <p class="text-muted-foreground">No configured monitors match this client page.</p>
           </div>
 
-          <div v-else class="space-y-6">
-            <div v-for="group in groupedEndpoints" :key="group.name" class="space-y-3">
-              <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-foreground">{{ group.name }}</h2>
-                <span class="text-sm text-muted-foreground">{{ group.items.length }} check{{ group.items.length === 1 ? '' : 's' }}</span>
-              </div>
-              <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <EndpointCard
-                  v-for="endpoint in group.items"
-                  :key="endpoint.key"
-                  :endpoint="endpoint"
-                  :maxResults="resultPageSize"
-                  :showAverageResponseTime="showAverageResponseTime"
-                  @showTooltip="showTooltip"
-                />
-              </div>
+          <div v-else class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold text-foreground">Current Service Checks</h2>
+              <span class="text-sm text-muted-foreground">{{ relatedEndpoints.length }} checks</span>
+            </div>
+            <div class="grid gap-3 grid-cols-1 lg:grid-cols-2">
+              <EndpointCard
+                v-for="endpoint in sortedRelatedEndpoints"
+                :key="endpoint.key"
+                :endpoint="endpoint"
+                :maxResults="resultPageSize"
+                :showAverageResponseTime="showAverageResponseTime"
+                @showTooltip="showTooltip"
+              />
             </div>
           </div>
         </div>
@@ -222,12 +220,12 @@ const serviceSummaryDescription = computed(() => {
 
 const summaryToneClass = computed(() => {
   if (overallStatus.value === 'healthy') {
-    return 'bg-green-50 border-green-200 text-green-900 dark:bg-green-950 dark:border-green-900 dark:text-green-100'
+    return 'bg-green-700 border-green-600 text-white'
   }
   if (overallStatus.value === 'unhealthy') {
-    return 'bg-red-50 border-red-200 text-red-900 dark:bg-red-950 dark:border-red-900 dark:text-red-100'
+    return 'bg-red-700 border-red-600 text-white'
   }
-  return 'bg-muted text-muted-foreground'
+  return 'bg-card text-foreground'
 })
 
 const lastCheckTime = computed(() => {
@@ -259,6 +257,22 @@ const groupedEndpoints = computed(() => {
       name,
       items: groups[name].sort((a, b) => a.name.localeCompare(b.name)),
     }))
+})
+
+const sortedRelatedEndpoints = computed(() => {
+  const groupOrder = {
+    'website availability': 1,
+    'SSL certificates': 2,
+    'domain expiry': 3,
+    'DNS resolution': 4,
+  }
+  return [...relatedEndpoints.value].sort((a, b) => {
+    const groupComparison = (groupOrder[a.group] || 99) - (groupOrder[b.group] || 99)
+    if (groupComparison !== 0) {
+      return groupComparison
+    }
+    return a.name.localeCompare(b.name)
+  })
 })
 
 const serviceSummaries = computed(() => {
